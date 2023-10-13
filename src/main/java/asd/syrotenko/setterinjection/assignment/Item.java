@@ -1,4 +1,4 @@
-package asd.syrotenko.setterinjection.entity.assignment;
+package asd.syrotenko.setterinjection.assignment;
 
 public class Item {
 	private Integer id;

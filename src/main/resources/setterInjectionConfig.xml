@@ -6,7 +6,7 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!--using p:namespace-->
-	<bean name="emp" class="asd.syrotenko.setterinjection.entity.example.Employee" p:salary="2000.00">
+	<bean name="emp" class="asd.syrotenko.setterinjection.example.Employee" p:salary="2000.00">
 		<!--	using value element-->
 		<property name="id">
 			<value>20</value>
@@ -17,7 +17,7 @@
 	</bean>
 
 	<!--bean with list-->
-	<bean name="hospital" class="asd.syrotenko.setterinjection.entity.example.Hospital">
+	<bean name="hospital" class="asd.syrotenko.setterinjection.example.Hospital">
 		<property name="name" value="CityHospital"/>
 		<property name="departments">
 			<list>
@@ -29,7 +29,7 @@
 	</bean>
 
 	<!--bean with set-->
-	<bean name="carDealer" class="asd.syrotenko.setterinjection.entity.example.CarDealer">
+	<bean name="carDealer" class="asd.syrotenko.setterinjection.example.CarDealer">
 		<property name="name" value="City Dealer"/>
 		<property name="models">
 			<set>
@@ -41,7 +41,7 @@
 	</bean>
 
 	<!--bean with map-->
-	<bean name="customer" class="asd.syrotenko.setterinjection.entity.example.Customer">
+	<bean name="customer" class="asd.syrotenko.setterinjection.example.Customer">
 		<property name="id" value="5"/>
 		<property name="products">
 			<map>
@@ -55,7 +55,7 @@
 	</bean>
 
 	<!--bean with properties-->
-	<bean name="languages" class="asd.syrotenko.setterinjection.entity.example.Languages">
+	<bean name="languages" class="asd.syrotenko.setterinjection.example.Languages">
 		<property name="countryAndLanguages">
 			<props>
 				<prop key="USA">American English</prop>
@@ -66,18 +66,18 @@
 	</bean>
 
 	<!--bean with reference-->
-	<bean name="scores" class="asd.syrotenko.setterinjection.entity.example.Scores">
+	<bean name="scores" class="asd.syrotenko.setterinjection.example.Scores">
 		<property name="maths" value="100.0"/>
 		<property name="physics" value="95.0"/>
 		<property name="chemistry" value="80.0"/>
 	</bean>
 
-	<bean name="student" class="asd.syrotenko.setterinjection.entity.example.Student" p:scores-ref="scores"/>
+	<bean name="student" class="asd.syrotenko.setterinjection.example.Student" p:scores-ref="scores"/>
 
 	<!--assignment using p:schema-->
-	<bean name="dressItem" class="asd.syrotenko.setterinjection.entity.assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
-	<bean name="bagItem" class="asd.syrotenko.setterinjection.entity.assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
-	<bean name="shoppingCart" class="asd.syrotenko.setterinjection.entity.assignment.ShoppingCart">
+	<bean name="dressItem" class="asd.syrotenko.setterinjection.assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
+	<bean name="bagItem" class="asd.syrotenko.setterinjection.assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
+	<bean name="shoppingCart" class="asd.syrotenko.setterinjection.assignment.ShoppingCart">
 		<property name="items">
 			<list>
 				<ref bean="dressItem"/>

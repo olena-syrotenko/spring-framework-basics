@@ -1,4 +1,4 @@
-package asd.syrotenko.setterinjection.entity.assignment;
+package asd.syrotenko.setterinjection.assignment;
 
 import java.util.List;
 

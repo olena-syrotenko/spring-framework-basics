@@ -1,4 +1,4 @@
-package asd.syrotenko.setterinjection.entity.example;
+package asd.syrotenko.setterinjection.example;
 
 public class Employee {
 	private int id;
