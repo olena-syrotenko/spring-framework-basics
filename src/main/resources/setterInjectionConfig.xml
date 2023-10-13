@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--using p:namespace-->
+	<bean name="emp" class="asd.syrotenko.entity.example.Employee" p:salary="2000.00">
+		<!--	using value element-->
+		<property name="id">
+			<value>20</value>
+		</property>
+
+		<!--	using value attribute-->
+		<property name="name" value="Tom"/>
+	</bean>
+
+	<!--bean with list-->
+	<bean name="hospital" class="asd.syrotenko.entity.example.Hospital">
+		<property name="name" value="CityHospital"/>
+		<property name="departments">
+			<list>
+				<value>Front Office</value>
+				<value>Surgical</value>
+				<value>Nursing</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--bean with set-->
+	<bean name="carDealer" class="asd.syrotenko.entity.example.CarDealer">
+		<property name="name" value="City Dealer"/>
+		<property name="models">
+			<set>
+				<value>BMW</value>
+				<value>Tesla</value>
+				<value>Tesla</value>
+			</set>
+		</property>
+	</bean>
+
+	<!--bean with map-->
+	<bean name="customer" class="asd.syrotenko.entity.example.Customer">
+		<property name="id" value="5"/>
+		<property name="products">
+			<map>
+				<entry key="1" value="IPhone"/>
+				<entry key="2" value="MacBook"/>
+				<entry key="3" value="IPad"/>
+				<entry key="4" value="AppleWatch"/>
+				<entry key="1" value="Samsung"/>
+			</map>
+		</property>
+	</bean>
+
+	<!--bean with properties-->
+	<bean name="languages" class="asd.syrotenko.entity.example.Languages">
+		<property name="countryAndLanguages">
+			<props>
+				<prop key="USA">American English</prop>
+				<prop key="UK">British English</prop>
+				<prop key="Spain">Spanish</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!--bean with reference-->
+	<bean name="scores" class="asd.syrotenko.entity.example.Scores">
+		<property name="maths" value="100.0"/>
+		<property name="physics" value="95.0"/>
+		<property name="chemistry" value="80.0"/>
+	</bean>
+
+	<bean name="student" class="asd.syrotenko.entity.example.Student" p:scores-ref="scores"/>
+
+	<!--assignment using p:schema-->
+	<bean name="dressItem" class="asd.syrotenko.entity.assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
+	<bean name="bagItem" class="asd.syrotenko.entity.assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
+	<bean name="shoppingCart" class="asd.syrotenko.entity.assignment.ShoppingCart">
+		<property name="items">
+			<list>
+				<ref bean="dressItem"/>
+				<ref bean="bagItem"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>
