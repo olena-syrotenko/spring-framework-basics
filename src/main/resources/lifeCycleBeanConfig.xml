@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--	Manage lifecycle with XML configuration-->
+	<bean name="patientXml" class="asd.syrotenko.lifecycle.example.PatientXml" p:id="1" init-method="createBean"
+		  destroy-method="destroyBean"/>
+
+	<!--	Manage lifecycle with interface methods-->
+	<bean name="patientInterface" class="asd.syrotenko.lifecycle.example.PatientInterface" p:id="2"/>
+
+	<!--	Manage lifecycle with annotations-->
+	<context:annotation-config/>
+	<bean name="patientAnnotation" class="asd.syrotenko.lifecycle.example.PatientAnnotation" p:id="3"/>
+
+	<!--	Assignment to create bean with annotations-->
+	<bean name="ticketReservation" class="asd.syrotenko.lifecycle.assignment.TicketReservation"/>
+</beans>
