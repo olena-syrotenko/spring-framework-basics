@@ -1,4 +1,4 @@
-package asd.syrotenko.entity.example;
+package asd.syrotenko.setterinjection.entity.example;
 
 import java.util.Set;
 

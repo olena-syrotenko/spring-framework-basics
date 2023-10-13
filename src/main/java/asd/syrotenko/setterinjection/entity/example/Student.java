@@ -1,4 +1,4 @@
-package asd.syrotenko.entity.example;
+package asd.syrotenko.setterinjection.entity.example;
 
 public class Student {
 	private Scores scores;

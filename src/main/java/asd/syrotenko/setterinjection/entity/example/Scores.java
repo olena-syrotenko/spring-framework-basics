@@ -1,4 +1,4 @@
-package asd.syrotenko.entity.example;
+package asd.syrotenko.setterinjection.entity.example;
 
 public class Scores {
 	private Double maths;

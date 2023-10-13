@@ -1,13 +1,13 @@
 package asd.syrotenko;
 
-import asd.syrotenko.entity.assignment.Item;
-import asd.syrotenko.entity.assignment.ShoppingCart;
-import asd.syrotenko.entity.example.CarDealer;
-import asd.syrotenko.entity.example.Customer;
-import asd.syrotenko.entity.example.Employee;
-import asd.syrotenko.entity.example.Hospital;
-import asd.syrotenko.entity.example.Languages;
-import asd.syrotenko.entity.example.Student;
+import asd.syrotenko.setterinjection.entity.assignment.Item;
+import asd.syrotenko.setterinjection.entity.assignment.ShoppingCart;
+import asd.syrotenko.setterinjection.entity.example.CarDealer;
+import asd.syrotenko.setterinjection.entity.example.Customer;
+import asd.syrotenko.setterinjection.entity.example.Employee;
+import asd.syrotenko.setterinjection.entity.example.Hospital;
+import asd.syrotenko.setterinjection.entity.example.Languages;
+import asd.syrotenko.setterinjection.entity.example.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
