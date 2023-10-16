@@ -1,13 +1,13 @@
 # Spring Boot Notes
 
-1. [Spring Boot Core Concepts](#core)
+1. [Spring Boot Core Concepts](#spring-boot-core-concepts)
 2. [Life Cycle](#life-cycle)
 3. [Setter Injection](#setter-injection)
-   - [primitive types](#setter-primitive)
-   - [collections](#setter-collections)
-   - [reference types](#setter-reference)
+   - [primitive types](#primitive-types)
+   - [collections](#collections)
+   - [reference types](#reference-types)
 
-<h2 id="core"> Spring Boot Core Concepts </h2>
+## Spring Boot Core Concepts
 
 Spring Framework combines Inversion of Control (IoC) and Dependecy Injection (DI) principles.
 
@@ -26,7 +26,7 @@ Container is represented by `ApplicationContext` interface that is used to acces
   - setter injection - container invokes setter methods to initialize bean after invoking no-arguments constructor to create it.
   - constructor injection - container invokes parametrized constructor to initialize bean.
 
-<h2 id="life-cycle"> Life Cycle </h2>
+## Life Cycle
 
 Bean life cycle is managed by the spring container. The process flow of the bean life cycle is next: 
   1. Bean initialized;
@@ -84,9 +84,9 @@ public class ExampleWithAnnotation {
 <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
 ```
 
-<h2 id="setter-injection"> Setter Injection </h2>
+## Setter Injection
 
-<h3 id="setter-primitive"> Primitive types </h3>
+### Primitive types
 
    To set primitive types, their wrappers (Integer, Double...) and String we can use `value` attribute in `property` element
 
@@ -103,7 +103,7 @@ Or use `p:schema` and set value directly in `bean` element
 <bean name="emp" class="example.Employee" p:id="20" p:name="Tom"/>
 ```
 
-<h3 id="setter-collections"> Collectons </h3>
+### Collections
 
    - ***List***
    
@@ -185,7 +185,7 @@ If we want to create set with one element we can use only `value` attribute.
 </bean>
 ```
 
-<h3 id="setter-reference"> Reference types </h3>
+### Reference types
 
    To set reference types we can use `ref` attribute of `property` element, in which we set name of necessary bean.
    
