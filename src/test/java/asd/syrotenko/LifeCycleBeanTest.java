@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class LifeCycleBeanConfigTest {
+public class LifeCycleBeanTest {
 	private static final String DATE = LocalDate.now().toString();
 	private ClassPathXmlApplicationContext ctx;
 

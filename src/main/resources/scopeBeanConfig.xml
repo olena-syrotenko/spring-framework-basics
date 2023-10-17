@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--Bean with singleton scope (by default)-->
+	<bean name="employeeSingleton" class="asd.syrotenko.scope.example.EmployeeSingleton" p:id="1">
+		<property name="address">
+			<bean class="asd.syrotenko.scope.example.Address" p:hno="12" p:street="Street" p:city="Kyiv"/>
+		</property>
+	</bean>
+
+	<!--Bean with prototype scope-->
+	<bean name="employeePrototype" class="asd.syrotenko.scope.example.EmployeePrototype" p:id="1" scope="prototype">
+		<property name="address">
+			<bean class="asd.syrotenko.scope.example.Address" p:hno="20" p:street="Street" p:city="Lviv"/>
+		</property>
+	</bean>
+
+	<!--Assignment to create prototype bean with required name-->
+	<context:annotation-config/>
+	<bean name="university" class="asd.syrotenko.scope.assignment.University" p:name="Default University" scope="prototype"/>
+
+</beans>
