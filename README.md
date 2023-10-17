@@ -2,7 +2,8 @@
 
 1. [Spring Boot Core Concepts](#spring-boot-core-concepts)
 2. [Life Cycle](#life-cycle)
-3. [Setter Injection](#setter-injection)
+3. [Scope](#scope)
+4. [Setter Injection](#setter-injection)
    - [primitive types](#primitive-types)
    - [collections](#collections)
    - [reference types](#reference-types)
@@ -82,6 +83,27 @@ public class ExampleWithAnnotation {
 ```
 ```xml
 <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+```
+
+## Scope
+
+***Bean scope*** defines the number of objects of a particular bean created in the conatiner.
+
+1. _Singleton_ is a default scope according to which bean is created once per spring container and it is shared by all the clients requesting that bean.
+2. _Prototype_ is a scope according to which bean is created each time it is requested from the spring container.
+3. _Request_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per HTTP request.
+4. _Session_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per HTTP session.
+
+In Spring version < 5 _globalsession_ scope is defined according to which beans are created per global HTTP session.
+
+In Spring 5 two additional scopes are defined:
+- _Application_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per web application and are shared across all sessions and requests. It is similar to singletn scope but with application scope beans are shared across all apps and contexts in the same server.
+- _WebSocket_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per Websocket connection and are available throughout the websocket session.
+
+We can define scope for a bean using `scope` attribute of a `bean` element and set name of needed scope.
+
+```xml
+<bean name="university" class="assignment.University" p:name="Default University" scope="prototype"/>
 ```
 
 ## Setter Injection
@@ -206,11 +228,26 @@ Or we can use `p:schema` and set value directly in `bean` element using property
 If we need to set collection of references we can use `ref` element with `bean` attribute.
 
 ```xml
-<bean name="shoppingCart" class="asd.syrotenko.setterinjection.assignment.ShoppingCart">
+<bean class="assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
+<bean class="assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
+<bean name="shoppingCart" class="assignment.ShoppingCart">
 	<property name="items">
 		<list>
 			<ref bean="dressItem"/>
 			<ref bean="bagItem"/>
+		</list>
+	</property>
+</bean>
+```
+
+If we need to set bean that will not be reused we can defune ***inner bean*** using `bean` element inside a particular property or collection.
+
+```xml
+<bean name="shoppingCart" class="assignment.ShoppingCart">
+	<property name="items">
+		<list>
+			<bean class="Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
+			<bean class="Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
 		</list>
 	</property>
 </bean>
