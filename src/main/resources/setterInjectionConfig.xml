@@ -75,13 +75,12 @@
 	<bean name="student" class="asd.syrotenko.setterinjection.example.Student" p:scores-ref="scores"/>
 
 	<!--assignment using p:schema-->
-	<bean name="dressItem" class="asd.syrotenko.setterinjection.assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
-	<bean name="bagItem" class="asd.syrotenko.setterinjection.assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
 	<bean name="shoppingCart" class="asd.syrotenko.setterinjection.assignment.ShoppingCart">
 		<property name="items">
 			<list>
-				<ref bean="dressItem"/>
-				<ref bean="bagItem"/>
+				<!--inner beans-->
+				<bean class="asd.syrotenko.setterinjection.assignment.Item" p:id="1" p:name="Dress" p:price="100.50" p:quantity="3"/>
+				<bean class="asd.syrotenko.setterinjection.assignment.Item" p:id="2" p:name="Handbag" p:price="20.59" p:quantity="1"/>
 			</list>
 		</property>
 	</bean>
