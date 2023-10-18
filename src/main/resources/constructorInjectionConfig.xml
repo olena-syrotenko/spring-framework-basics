@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:c="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--Constructor injection using c:namespace-->
+	<bean name="address" class="asd.syrotenko.constructorinjection.Address" c:houseNumber="10" c:street="Default Street" c:city="Kharkiv"/>
+
+	<!--Constructor injection using constructor-arg element-->
+	<bean name="employee" class="asd.syrotenko.constructorinjection.Employee">
+		<constructor-arg value="1"/>
+		<constructor-arg ref="address"/>
+		<constructor-arg>
+			<list>
+				<value>MacbookPro</value>
+				<value>AirPods</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!--Ambiguity problems-->
+
+	<bean name="typeDefault" class="asd.syrotenko.constructorinjection.AmbiguityType">
+		<constructor-arg value="10"/>
+	</bean>
+	<!--Use type to define type of passed argument-->
+	<bean name="doubleType" class="asd.syrotenko.constructorinjection.AmbiguityType">
+		<constructor-arg value="10" type="double"/>
+	</bean>
+
+	<bean name="withStringDefault" class="asd.syrotenko.constructorinjection.AmbiguityWithString">
+		<constructor-arg value="10"/>
+	</bean>
+	<!--Use name to use constructor with a particular argument name-->
+	<bean name="withStringSpecifyName" class="asd.syrotenko.constructorinjection.AmbiguityWithString">
+		<constructor-arg value="10" name="intField"/>
+	</bean>
+
+	<bean name="numDifferenceDefaultOrder" class="asd.syrotenko.constructorinjection.NumDifference">
+		<constructor-arg value="10"/>
+		<constructor-arg value="5"/>
+	</bean>
+	<!--Use index to pass value to a parameter at a particular position-->
+	<bean name="numDifferenceReverseOrder" class="asd.syrotenko.constructorinjection.NumDifference">
+		<constructor-arg value="10" index="1"/>
+		<constructor-arg value="5" index="0"/>
+	</bean>
+
+</beans>
