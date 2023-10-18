@@ -7,6 +7,7 @@
    - [primitive types](#primitive-types)
    - [collections](#collections)
    - [reference types](#reference-types)
+5. [Constructor Injection](#constructor-injection)
 
 ## Spring Boot Core Concepts
 
@@ -107,6 +108,8 @@ We can define scope for a bean using `scope` attribute of a `bean` element and s
 ```
 
 ## Setter Injection
+
+To use setter injection you should define `property` element inside `bean` element. Also, you can set values using `p:namespace` + field name as an attribute of `bean` element.
 
 ### Primitive types
 
@@ -251,4 +254,103 @@ If we need to set bean that will not be reused we can defune ***inner bean*** us
 		</list>
 	</property>
 </bean>
+```
+
+## Constructor Injection
+
+To use constructor injection you should define `constructor-arg` element inside `bean` element in the order of constructor parameters. Rules for primitive, collection and referenct types are the same as for setter injection.
+
+```xml
+<!--Constructor injection using constructor-arg element-->
+<bean name="employee" class="example.Employee">
+	<constructor-arg value="1"/>
+	<constructor-arg ref="address"/>
+	<constructor-arg>
+		<list>
+			<value>MacbookPro</value>
+			<value>AirPods</value>
+		</list>
+	</constructor-arg>
+</bean>
+
+<!--Or with inner bean-->
+<bean name="employee" class="example.Employee">
+	<constructor-arg>
+		<bean class="example.Address" c:houseNumber="10" c:street="Default Street" c:city="Kharkiv"/>
+	</constructor-arg>
+</bean>
+```
+
+Also, you can set values using `c:namespace` + constructor argument name as an attribute of `bean` element.
+
+```xml
+<!--Constructor injection using c:namespace-->
+<bean name="address" class="example.Address" c:houseNumber="10" c:street="Default Street" c:city="Kharkiv"/>
+```
+
+***Ambiguity problem*** with constructor injection consists of using string and numbers in overload constructors. By default the constructor with _String_ parameter will be used.
+To avoid this problem we can use `type` or `name` attributes of `constructor-arg` element.
+
+```java
+public class AmbiguityExample {
+	private Integer intField;
+	private String stringField;
+
+	public AmbiguityExample(Integer intField) {
+		this.intField = intField;
+	}
+
+	public AmbiguityExample(String stringField) {
+		this.stringField = stringField;
+	}
+}
+```
+
+```xml
+<!--constructor with string parameter will be used-->
+<bean name="typeDefault" class="example.AmbiguityExample">
+	<constructor-arg value="10"/>
+</bean>
+
+<!--constructor with int parameter will be used-->
+<bean name="typeDefault" class="example.AmbiguityExample">
+	<constructor-arg value="10" type="int"/>
+</bean>
+
+<!--constructor with int parameter will be used-->
+<bean name="typeDefault" class="example.AmbiguityExample">
+	<constructor-arg value="10" name="intField"/>
+</bean>
+```
+
+Specifying an `index` attribute of `constructor-arg` element solves the problem of ambiguity where a constructor may have two arguments of the same type.
+
+```java
+public class NumDifference {
+	private Integer firstValue;
+	private Integer secondValue;
+
+	public NumDifference(Integer firstValue, Integer secondValue) {
+		this.firstValue = firstValue;
+		this.secondValue = secondValue;
+	}
+
+	public Integer getDifference() {
+		return firstValue - secondValue;
+	}
+}
+```
+```xml
+<!--In the first case difference will be equal 5-->
+<bean name="numDifferenceDefaultOrder" class="example.NumDifference">
+	<constructor-arg value="10"/>
+	<constructor-arg value="5"/>
+</bean>
+<!--In the second case difference will be equal -5-->
+<bean name="numDifferenceReverseOrder" class="example.NumDifference">
+	<constructor-arg value="10" index="1"/>
+	<constructor-arg value="5" index="0"/>
+</bean>
+<!--Also we can set value to parameter with a particular index using c:namespace-->
+<bean name="numDifferenceReverseOrder" class="asd.syrotenko.constructorinjection.NumDifference" c:_0="5" c:_1="10"/>
 ```
