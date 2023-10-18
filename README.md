@@ -8,6 +8,7 @@
    - [collections](#collections)
    - [reference types](#reference-types)
 5. [Constructor Injection](#constructor-injection)
+6. [Properties](#properties)
 
 ## Spring Boot Core Concepts
 
@@ -353,4 +354,26 @@ public class NumDifference {
 </bean>
 <!--Also we can set value to parameter with a particular index using c:namespace-->
 <bean name="numDifferenceReverseOrder" class="asd.syrotenko.constructorinjection.NumDifference" c:_0="5" c:_1="10"/>
+```
+
+## Properties
+
+We can use values from `.properties` file to initialize beans. 
+If we configure beans in ***xml file*** we can use `<context:property-placeholder/>` element and set path of property file in `location` attribute. We can get value from properties file in the next way: `${propName}`.
+
+```properties
+#config.properties
+ws.url=test-xyz
+ws.userName=test
+ws.password=test
+```
+
+```xml
+<!--beanConfig.xml-->
+<context:property-placeholder location="properties/config.properties"/>
+<bean name="clientConfig" class="assignment.ClientConfig">
+	<constructor-arg name="url" value="${ws.url}"/>
+	<constructor-arg name="userName" value="${ws.userName}"/>
+	<constructor-arg name="password" value="${ws.password}"/>
+</bean>
 ```
