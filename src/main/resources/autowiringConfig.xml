@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--Autowire address by type-->
+	<bean name="address" class="asd.syrotenko.autowiring.example.Address" p:hno="10" p:street="Default Street" p:city="Kharkiv"/>
+	<bean name="employeeByType" class="asd.syrotenko.autowiring.example.Employee" autowire="byType"/>
+	<!--Autowire address by constructor-->
+	<bean name="employeeByConstructor" class="asd.syrotenko.autowiring.example.Employee" autowire="constructor"/>
+
+	<!--Autowire score by name-->
+	<bean name="studentScores" class="asd.syrotenko.autowiring.example.Scores" p:maths="100.0" p:physics="95.0" p:chemistry="90.0"/>
+	<bean name="scholarScores" class="asd.syrotenko.autowiring.example.Scores" p:maths="70.0" p:physics="65.0" p:chemistry="60.0"/>
+	<bean name="student" class="asd.syrotenko.autowiring.example.Student" autowire="byName"/>
+
+	<!--Activate autowired annotations-->
+	<context:annotation-config/>
+	<bean name="messageService" class="asd.syrotenko.autowiring.example.annotations.MessageService" p:host="test-host"/>
+	<bean name="autowiredByField" class="asd.syrotenko.autowiring.example.annotations.AutowiredByField"/>
+	<bean name="autowiredBySetter" class="asd.syrotenko.autowiring.example.annotations.AutowiredBySetter"/>
+	<bean name="autowiredByConstructor" class="asd.syrotenko.autowiring.example.annotations.AutowiredByConstructor"/>
+
+	<bean name="scholar" class="asd.syrotenko.autowiring.example.annotations.Scholar"/>
+
+	<!--Assignment-->
+	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd"/>
+	</bean>
+
+	<bean name="reservation" class="asd.syrotenko.autowiring.assignment.Reservation" p:id="1" p:fromDate="2023-10-10" p:toDate="2023-10-15"/>
+	<bean name="customer" class="asd.syrotenko.autowiring.assignment.Customer" p:name="Tom"/>
+</beans>
