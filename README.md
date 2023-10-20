@@ -1,15 +1,16 @@
 # Spring Boot Notes
 
 1. [Spring Boot Core Concepts](#spring-boot-core-concepts)
-2. [Life Cycle](#life-cycle)
-3. [Scope](#scope)
-4. [Setter Injection](#setter-injection)
+2. [Bean Configuration](#bean-configuration)
+3. [Life Cycle](#life-cycle)
+4. [Scope](#scope)
+5. [Setter Injection](#setter-injection)
    - [primitive types](#primitive-types)
    - [collections](#collections)
    - [reference types](#reference-types)
-5. [Constructor Injection](#constructor-injection)
-6. [Properties](#properties)
-7. [Autowiring](#autowiring)
+6. [Constructor Injection](#constructor-injection)
+7. [Properties](#properties)
+8. [Autowiring](#autowiring)
 
 ## Spring Boot Core Concepts
 
@@ -29,6 +30,29 @@ Container is represented by `ApplicationContext` interface that is used to acces
 ***Dependency Injection*** is a process injecting that an objet requires at runtime dynamically. There are 2 types of injection:
   - setter injection - container invokes setter methods to initialize bean after invoking no-arguments constructor to create it.
   - constructor injection - container invokes parametrized constructor to initialize bean.
+
+## Bean Configuration
+
+We can define bean using either xml configuration file or stereotype annotations.
+
+With ***XML config*** we can identify a particular class as a bean using `bean` element with `name` and `class` attributes.
+
+```xml
+<bean name="customer" class="example.Customer"/>
+```
+ 
+With ***stereotype annotations*** we can set one of the available annotation at class level:
+
+- `@Component` is the most general-purpose stereotype annotation and is used to mark any class as a component.
+- `@Service` is used to mark a class as a service component, which typically performs business logic.
+- `@Repository` is used to mark a class as a repository component, which is responsible to interact with the database and handle data operations.
+- `@Controller` is used to mark a class as a controller component, which is responsible for handling incoming requests and returning appropriate responses.
+
+To activate stereotype annotations we should add `component-scan` element into xml config file and set `base-package` attribute that is path to scan for beans.
+
+```xml
+<context:component-scan base-package="com.example.beans"/>
+```
 
 ## Life Cycle
 
@@ -103,10 +127,20 @@ In Spring 5 two additional scopes are defined:
 - _Application_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per web application and are shared across all sessions and requests. It is similar to singletn scope but with application scope beans are shared across all apps and contexts in the same server.
 - _WebSocket_ is a scope that available only in Spring MVC web apps, beans with this scope are created once per Websocket connection and are available throughout the websocket session.
 
-We can define scope for a bean using `scope` attribute of a `bean` element and set name of needed scope.
+We can define scope for a bean with ***XML configuration*** using `scope` attribute of a `bean` element and set name of needed scope.
 
 ```xml
 <bean name="university" class="assignment.University" p:name="Default University" scope="prototype"/>
+```
+
+Also, to define scope we can use ***`@Scope` annotation*** with needed scope name at a class level.
+
+```java
+@Component
+@Scope("prototype")
+public class Instructor {
+    // attributes and methods
+}
 ```
 
 ## Setter Injection
@@ -115,7 +149,7 @@ To use setter injection you should define `property` element inside `bean` eleme
 
 ### Primitive types
 
-   To set primitive types, their wrappers (Integer, Double...) and String we can use `value` attribute in `property` element
+   To set primitive types, their wrappers (Integer, Double...) and String with ***XML configuration*** we can use `value` attribute in `property` element
 
 ```xml
 <bean name="emp" class="example.Employee" >
@@ -128,6 +162,16 @@ Or use `p:schema` and set value directly in `bean` element
 
 ```xml
 <bean name="emp" class="example.Employee" p:id="20" p:name="Tom"/>
+```
+
+To set primitive types with ***annotations*** we can use `@Value` annotation with needed value at a field level.
+
+```java
+@Component
+public class Instructor {
+	@Value("1")
+	private Integer id;
+}
 ```
 
 ### Collections
@@ -226,6 +270,16 @@ If we want to create set with one element we can use only `value` attribute.
 	<bean name="availableCurrencies" class=".setterinjection.example.Currencies" p:availableCurrencies-ref="currencies"/>
 ```
 
+To set collections with ***annotations*** we can use `@Value` annotation with name of created standalone collection in xml file in format `#{collection-bean}`
+
+```java
+@Component
+public class Currencies {
+	@Value("#{currencies}")
+	private Set<String> availableCurrencies;
+}
+```
+
 ### Reference types
 
    To set reference types we can use `ref` attribute of `property` element, in which we set name of necessary bean.
@@ -259,7 +313,7 @@ If we need to set collection of references we can use `ref` element with `bean` 
 </bean>
 ```
 
-If we need to set bean that will not be reused we can defune ***inner bean*** using `bean` element inside a particular property or collection.
+If we need to set bean that will not be reused we can define ***inner bean*** using `bean` element inside a particular property or collection.
 
 ```xml
 <bean name="shoppingCart" class="assignment.ShoppingCart">
@@ -270,6 +324,17 @@ If we need to set bean that will not be reused we can defune ***inner bean*** us
 		</list>
 	</property>
 </bean>
+```
+
+To set reference type with ***annotations*** we can use `@Autowired` annotation at needed level.
+
+```java
+@Component
+public class Student {
+	@Autowired
+	private Scores scores;
+}
+
 ```
 
 ## Constructor Injection
