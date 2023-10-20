@@ -3,6 +3,7 @@ package asd.syrotenko;
 import asd.syrotenko.setterinjection.assignment.Item;
 import asd.syrotenko.setterinjection.assignment.ShoppingCart;
 import asd.syrotenko.setterinjection.example.CarDealer;
+import asd.syrotenko.setterinjection.example.Currencies;
 import asd.syrotenko.setterinjection.example.Customer;
 import asd.syrotenko.setterinjection.example.Employee;
 import asd.syrotenko.setterinjection.example.Hospital;
@@ -12,10 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetterInjectionBeanTest {
 	private ClassPathXmlApplicationContext ctx;
@@ -87,5 +90,12 @@ public class SetterInjectionBeanTest {
 		assertEquals(2, bagItem.getId());
 		assertEquals(20.59, bagItem.getPrice());
 		assertEquals(1, bagItem.getQuantity());
+	}
+
+	@Test
+	public void testCurrenciesBean() {
+		Currencies currencies = (Currencies) ctx.getBean("availableCurrencies");
+		assertEquals(3, currencies.getAvailableCurrencies().size());
+		assertTrue(currencies.getAvailableCurrencies().containsAll(Arrays.asList("USD", "UAH", "EUR")));
 	}
 }
