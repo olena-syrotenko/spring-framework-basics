@@ -212,6 +212,20 @@ If we want to create set with one element we can use only `value` attribute.
 </bean>
 ```
 
+   - ***Standalone collecions***
+
+     To create reusable collection we can use `util:schema`. To create bean of particular collection we need to create `util:{collection-name}` element and set `id` and `{collection}-type` attributes.
+
+```xml
+	<!--standalone collection that can be reused-->
+	<util:set set-class="java.util.TreeSet" id="currencies">
+		<value>USD</value>
+		<value>EUR</value>
+		<value>UAH</value>
+	</util:set>
+	<bean name="availableCurrencies" class=".setterinjection.example.Currencies" p:availableCurrencies-ref="currencies"/>
+```
+
 ### Reference types
 
    To set reference types we can use `ref` attribute of `property` element, in which we set name of necessary bean.
