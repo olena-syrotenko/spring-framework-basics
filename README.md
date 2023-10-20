@@ -9,6 +9,7 @@
    - [reference types](#reference-types)
 5. [Constructor Injection](#constructor-injection)
 6. [Properties](#properties)
+7. [Autowiring](#autowiring)
 
 ## Spring Boot Core Concepts
 
@@ -377,3 +378,53 @@ ws.password=test
 	<constructor-arg name="password" value="${ws.password}"/>
 </bean>
 ```
+
+## Autowiring
+
+***Autowiring*** is a form of dependency injection in Spring that allows IOC container to automatically wire beans together without the need for explicit configuration.
+There are different ways through which we can autowire a spring bean:
+1. ***XML configuration***
+   To config autowiring for bean in a xml file we need to set needed autowiring startegy using `autowire` attribute of `bean` element. Autowiring can be configured with next strategies:
+   
+   - _no_ - default type of autowiring when bean references must be defined by `ref` elements.
+   - _byName_ - Spring looks for a bean with the same name as the property that needs to be autowired. Setter injection is used.
+   - _byType_ - Spring looks for a bean with the same class as the property that needs to be autowired. Property be successfully autowired if exactly one bean of the property type exists in the container. Setter injection is used.
+   - _constructor_ - same as autowiring byType. Constructor injection is used.
+  
+```xml
+<bean name="address" class="asd.syrotenko.autowiring.example.Address" p:hno="10" p:street="Default Street" p:city="Kharkiv"/>
+<!--Setter method will be used-->
+<bean name="employeeByType" class="autowiring.example.Employee" autowire="byType"/>
+<!--Constructor will be used-->
+<bean name="employeeByConstructor" class="autowiring.example.Employee" autowire="constructor"/>
+
+<bean name="studentScores" class="autowiring.example.Scores" p:maths="100.0" p:physics="95.0" p:chemistry="90.0"/>
+<bean name="scholarScores" class="autowiring.example.Scores" p:maths="70.0" p:physics="65.0" p:chemistry="60.0"/>
+<!--private Scores studentScores;-->
+<!--studentScores will be injected-->
+<bean name="student" class="autowiring.example.Student" autowire="byName"/>
+```
+
+2. ***Annotations***
+   
+   - `@Autowired` annotation can be applied on variables and methods (equivalent to autowiring byType) or on constructors (equivalent to autowiring by constructor). Property be successfully autowired if exactly one bean of the property type exists in the container.
+   - `@Qualifier` annotation is used to avoid conflicts in bean mapping and we need to provide the bean name that will be used for autowiring. This way we can avoid issues where multiple beans are defined for same type. This annotation usually works with the @Autowired annotation. For constructors with multiple arguments, we can use this annotation with the argument names in the method.
+
+```java
+// scholarScores bean will be injected
+public class Scholar {
+	@Autowired
+	@Qualifier("scholarScores")
+	private Scores scores;
+
+	public Scores getScores() {
+		return scores;
+	}
+
+	public void setScores(Scores scholarScores) {
+		this.scores = scholarScores;
+	}
+}
+```
+
+
