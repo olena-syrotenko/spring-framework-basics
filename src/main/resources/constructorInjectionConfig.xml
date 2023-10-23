@@ -20,6 +20,10 @@
 		</constructor-arg>
 	</bean>
 
+	<!--Injecting interfaces-->
+	<bean name="userDao" class="asd.syrotenko.constructorinjection.UserDaoImpl"/>
+	<bean name="userService" class="asd.syrotenko.constructorinjection.UserService" c:userDao-ref="userDao"/>
+
 	<!--Ambiguity problems-->
 
 	<bean name="typeDefault" class="asd.syrotenko.constructorinjection.AmbiguityType">

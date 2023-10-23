@@ -5,6 +5,7 @@ import asd.syrotenko.constructorinjection.AmbiguityType;
 import asd.syrotenko.constructorinjection.AmbiguityWithString;
 import asd.syrotenko.constructorinjection.Employee;
 import asd.syrotenko.constructorinjection.NumDifference;
+import asd.syrotenko.constructorinjection.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,6 +32,12 @@ public class ConstructorInjectionBeanTest {
 		assertEquals(10, address.getHno());
 		assertEquals("Default Street", address.getStreet());
 		assertEquals("Kharkiv", address.getCity());
+	}
+
+	@Test
+	public void testUserServiceBean() {
+		UserService userService = (UserService) ctx.getBean("userService");
+		assertEquals("username-10", userService.getUserById(10));
 	}
 
 	@Test
