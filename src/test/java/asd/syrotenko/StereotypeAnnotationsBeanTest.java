@@ -23,7 +23,7 @@ public class StereotypeAnnotationsBeanTest {
 		Instructor instructor = (Instructor) ctx.getBean("instructor");
 		assertNotNull(instructor);
 		assertEquals(1, instructor.getId());
-		assertEquals("Default Instructor", instructor.getName());
+		assertEquals("Instructor John", instructor.getName());
 		assertEquals(2, instructor.getTopics().size());
 
 		Profile profile = instructor.getProfile();

@@ -14,7 +14,7 @@ public class Instructor {
 	@Value("1")
 	private Integer id;
 
-	@Value("Default Instructor")
+	@Value("#{T(asd.syrotenko.stereotypeannotations.InstructorUtils).defineFullName('John')}")
 	private String name;
 
 	@Value("#{topicList}")
