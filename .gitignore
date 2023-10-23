@@ -34,4 +34,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-src/main/resources/lifecycle/
+spring-core/src/main/resources/lifecycle
