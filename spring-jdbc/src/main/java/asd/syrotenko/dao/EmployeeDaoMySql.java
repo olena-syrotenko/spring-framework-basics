@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("employeeDao")
-public class EmployeeDaoImpl implements EmployeeDao {
+public class EmployeeDaoMySql implements EmployeeDao {
 
 	private static final String INSERT_EMPLOYEE = "INSERT INTO employee(first_name, last_name) VALUES(?,?)";
 	private static final String UPDATE_EMPLOYEE = "UPDATE employee SET first_name = ?, last_name = ? WHERE id = ?";
