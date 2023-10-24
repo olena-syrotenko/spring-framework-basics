@@ -11,6 +11,7 @@
 6. [Constructor Injection](#constructor-injection)
 7. [Properties](#properties)
 8. [Autowiring](#autowiring)
+9. [Spring JDBC](#spring-jdbc)
 
 ## Spring Boot Core Concepts
 
@@ -506,4 +507,54 @@ public class Scholar {
 }
 ```
 
+## Spring JDBC
 
+***Spring JDBC*** takes care of all the low-level details starting from opening the connection, preparing and executing the SQL statement, processing exceptions, handling transactions, and finally closing the connection.
+
+First af all, we need to configure connection to the database in two steps: 
+1. Prepare `DriverManagerDataSource` with database properties.
+2. Inject data source to `JdbcTemplate` object that will be used to acces to db and execute queries.
+
+To execute operations of ***insert, update and delete*** we need to use `update` method and pass query and parameters to it. It returns the count of updated records.
+
+```java
+public Integer create(Employee employee) {
+	if (employee == null) {
+		return 0;
+	}
+	return jdbcTemplate.update("INSERT INTO employee(first_name, last_name) VALUES(?,?)", employee.getFirstName(), employee.getLastName());
+}
+```
+
+To ***select*** data from db we need to use:
+- `queryForObject` method if we expect one record;
+- `query` method if we expect multiple result.
+
+Also, we need to implement ***RowMapper\<T\>*** with needed return type to map result set to object.
+
+```java
+public class EmployeeRowMapper implements RowMapper<Employee> {
+	@Override
+	public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Employee employee = new Employee();
+		employee.setId(rs.getInt("id"));
+		employee.setFirstName(rs.getString("first_name"));
+		employee.setLastName(rs.getString("last_name"));
+		return employee;
+	}
+}
+
+public class EmployeeDao {
+	@Override
+	public Employee readById(Integer id) {
+		if (id == null) {
+			return null;
+		}
+		try {
+			return jdbcTemplate.queryForObject("SELECT * FROM employee WHERE id = ?", new EmployeeRowMapper(), id);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+}
+```
