@@ -12,6 +12,7 @@
 7. [Properties](#properties)
 8. [Autowiring](#autowiring)
 9. [Spring JDBC](#spring-jdbc)
+10. [Spring ORM](#spring-orm)
 
 ## Spring Boot Core Concepts
 
@@ -556,5 +557,88 @@ public class EmployeeDao {
 			return null;
 		}
 	}
+}
+```
+
+## Spring ORM
+
+***Spring ORM*** is a module of the Java Spring framework used to implement the ORM(Object Relational Mapping) Technique.
+
+We need to prepare ***entity*** that would be mapped to a table in a database with next annotations:
+- `@Entity` - mandatory, indicate JPA entitiy
+- `@Id` - mandatory, define a primary key
+- `@Table` - specify the table name if it's different from the class name
+- `@Column` - specify the column name if it's different from the field name
+- `@GeneratedValue` - specify the strategy for generating primary key values
+
+```java
+@Entity
+@Table(name = "product")
+public class Product {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+	@Column(name = "name")
+	private String name;
+	@Column(name = "description")
+	private String desc;
+	@Column(name = "price")
+	private Double price;
+}
+```
+
+We need to ***configure connection*** to the database in two steps:
+1. Prepare `DriverManagerDataSource` with database properties.
+2. Initialize `LocalSessionFactoryBean` with dataSource and additional proprties:
+   - `hibernateProperties` that includes dialect
+   - `annotatedClasses` that is list of entity classes to register
+3. Initialize `HibernateTemplate` with sessionFactory.
+
+```xml
+<!--DataSource bean-->
+<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="dataSource" p:url="${db.url}" p:username="${db.username}" p:password="${db.password}"/>
+
+<!--SessionFactory bean-->
+<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="sessionFactory" p:dataSource-ref="dataSource">
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<prop key="hibernate.show_sql">true</prop>
+		</props>
+	</property>
+	<property name="annotatedClasses">
+		<list>
+			<value>asd.syrotenko.entity.Product</value>
+		</list>
+	</property>
+</bean>
+
+<!--HibernateTemplate bean-->
+<bean class="org.springframework.orm.hibernate5.HibernateTemplate" name="hibernateTemplate" p:sessionFactory-ref="sessionFactory"/>
+```
+
+***HibernateTemplate*** is used to perform database operations. It provides various methods which facilitate the insertion, deletion, modification, and retrieval of data from the database:
+- `save(Object entity)` - create object in the database;
+- `update(Object entity)` - update object in the database;
+- `delete(Object entity)` - delete object in the database;
+- `get(Class<T> entityClass, Serializable id)` - get object by id;
+- `List<T> loadAll(Class<T> entityClass)` - get all records.
+
+Also we can configure ***TransactionManager*** by init `HibernateTransactionManager` class with sessionFactory and also allow transactions by `<tx:annotation-driven/>` element. 
+
+```xml
+<tx:annotation-driven/>
+
+<!--TransactionManager bean-->
+<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager" p:sessionFactory-ref="sessionFactory"/>
+```
+
+After that we can use `@Transactional` annotation on method that should be executed with commit/rollback logic.
+
+```java
+@Transactional
+public List<Product> findAll() {
+	return hibernateTemplate.loadAll(Product.class);
 }
 ```
