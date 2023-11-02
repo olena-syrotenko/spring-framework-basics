@@ -35,3 +35,4 @@ build/
 .DS_Store
 
 spring-core/src/main/resources/lifecycle
+spring-aop/src/main/resources/log_*
