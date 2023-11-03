@@ -44,7 +44,7 @@ With ***XML config*** we can identify a particular class as a bean using `bean` 
 <bean name="customer" class="example.Customer"/>
 ```
  
-With ***stereotype annotations*** we can set one of the available annotation at class level:
+With ***stereotype annotations*** we can set one of the available annotation at a class level:
 
 - `@Component` is the most general-purpose stereotype annotation and is used to mark any class as a component.
 - `@Service` is used to mark a class as a service component, which typically performs business logic.
@@ -55,6 +55,19 @@ To activate stereotype annotations we should add `component-scan` element into x
 
 ```xml
 <context:component-scan base-package="com.example.beans"/>
+```
+
+Also, we can configure beans with ***annotations*** and classes. We need to create config class and use **`@Configuration`** annotation to mark this class as Spring configuration. We can identify a particular class as a bean using **`@Bean`** annotations at the method that return an object of bean class. We can use **`@Import`** annotation to import additional configuration classes.
+
+```java
+@Configuration
+@Import(DaoConfig.class)
+public class SpringConfig {
+
+	public ExampleService exampleService() {
+		return new ExampleService();
+	}
+}
 ```
 
 ## Life Cycle
@@ -115,6 +128,22 @@ public class ExampleWithAnnotation {
 <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
 ```
 
+  4. **By Annotation Configuration**
+
+     In this approach we set needed method names into `initMethod` and `destroyMethod` attributes of `@Bean` annotation in config class.
+
+```java
+@Configuration
+@Import(DaoConfig.class)
+public class SpringConfig {
+
+	@Bean(initMethod = "init", destroyMethod = "clean")
+	public ExampleService exampleService() {
+		return new ExampleService();
+	}
+}
+```
+
 ## Scope
 
 ***Bean scope*** defines the number of objects of a particular bean created in the conatiner.
@@ -143,6 +172,20 @@ Also, to define scope we can use ***`@Scope` annotation*** with needed scope nam
 @Scope("prototype")
 public class Instructor {
     // attributes and methods
+}
+```
+
+We can define scope for a bean with ***annotation configuration*** using `@Scope` annotation at a method level in configuration class.
+
+```java
+@Configuration
+@Import(DaoConfig.class)
+public class SpringConfig {
+
+	@Scope("prototype")
+	public ExampleEntity exampleEntity() {
+		return new ExampleEntity();
+	}
 }
 ```
 
