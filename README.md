@@ -13,6 +13,7 @@
 8. [Autowiring](#autowiring)
 9. [Spring JDBC](#spring-jdbc)
 10. [Spring ORM](#spring-orm)
+11. [Spring AOP](#spring-aop)
 
 ## Spring Boot Core Concepts
 
@@ -640,5 +641,66 @@ After that we can use `@Transactional` annotation on method that should be execu
 @Transactional
 public List<Product> findAll() {
 	return hibernateTemplate.loadAll(Product.class);
+}
+```
+
+## Spring AOP
+
+***AOP*** is a programming paradigm that aims to increase modularity by allowing the separation of cross-cutting concerns. It does this by adding additional behavior to existing code without modifying the code itself.
+
+Important terms:
+- _Aspect_ is a class that represents external service;
+- _Advice_ is a method that is defined in the aspect;
+- _PointCut_ is regular expression that matches join points. An advice is associated with a pointcut expression, and runs at any join point that matches the pointcut;
+- _JoinPoint_ is a combination of advice and pointcut. It tells wchih business method needs which advice;
+- _Target_ is an object of business class which needs advice;
+- _Weaving_ is a process of mixing advices to the target object according to joinpoints;
+- _Proxy_ is a result of weaving, a combination of advices and business classes.
+
+We can configure aspect and advices using xml configuration. 
+To define service as **aspect** we need to use `<aspect>` tag with service ref.
+To define **reused pointcat** we need to use `pointcat` tag and set name and expression to it.
+To define **advice** we need to choose one of advice types and set method and pointcat to it.
+
+```xml
+<bean name="loggingAspect" class="com.example.aspect.LoggingAspect"/>
+
+<aop:config>
+	<aop:aspect id="logAspect" ref="loggingAspect">
+		<aop:pointcut id="servicePointcut" expression="execution(public * com.example.service.*.*(..))"/>
+		<aop:before method="logBefore" pointcut-ref="servicePointcut"/>
+		<aop:after-returning method="logAfterExecution" pointcut-ref="servicePointcut"/>
+	</aop:aspect>
+</aop:config>
+```
+
+We can configure aspect and advices using annotations. To make service an aspect we need to use **`@Aspect`** annotation at the class level.
+
+To make method of aspect an **advice** we need to use next annotations with PointCut expression:
+- `@Before` - apply before business method;
+- `@AfterReturning` - apply after business method normal execution (without throwing an exception);
+- `@AfterThrowing` - apply after business method execution with thrown exception;
+- `@After` - apply after business method execution (both normal and with exception);
+- `@Around` - apply before and after business method execution.
+
+To allow using annotations we need to add `<aop:aspectj-autoproxy/>` tag into beans configuration file.
+
+```java
+@Aspect
+public class LoggingAspect {
+
+	@Before("execution(public * com.example.service.*.*(..))")
+	public void logBefore(JoinPoint joinPoint) throws IOException {
+		String logMessage = "Try to call " + joinPoint.getSignature().getDeclaringType() + "#" + joinPoint.getSignature().getName() + " with parameters: "
+			+ Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", ")) + "\n";
+		System.out.println(logMessage);
+	}
+
+	@AfterReturning("execution(public * asd.syrotenko.service.*.*(..))")
+	public void logAfterExecution(JoinPoint joinPoint) throws IOException {
+		String logMessage = "Execute method " + joinPoint.getSignature().getDeclaringType() + "#" + joinPoint.getSignature().getName() + " with parameters: "
+				+ Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.joining(", ")) + "\n";
+		System.out.println(logMessage);
+	}
 }
 ```
