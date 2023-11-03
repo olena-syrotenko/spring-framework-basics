@@ -11,4 +11,14 @@
 
 	<bean name="multiplyService" class="asd.syrotenko.service.MultiplyService"/>
 	<bean name="loggingAspect" class="asd.syrotenko.aspect.LoggingAspect"/>
+
+	<!-- Configuration with xml elements
+	<aop:config>
+		<aop:aspect id="logAspect" ref="loggingAspect">
+			<aop:pointcut id="servicePointcut" expression="execution(public * asd.syrotenko.service.*.*(..))"/>
+			<aop:before method="logBefore" pointcut-ref="servicePointcut"/>
+			<aop:after-returning method="logAfterExecution" pointcut-ref="servicePointcut"/>
+		</aop:aspect>
+	</aop:config>
+	-->
 </beans>
