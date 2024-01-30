@@ -1,4 +1,4 @@
-# Spring Boot Notes
+# Spring Notes
 
 1. [Spring Boot Core Concepts](#spring-boot-core-concepts)
 2. [Bean Configuration](#bean-configuration)
@@ -15,7 +15,7 @@
 10. [Spring ORM](#spring-orm)
 11. [Spring AOP](#spring-aop)
 
-## Spring Boot Core Concepts
+## Spring Core Concepts
 
 Spring Framework combines Inversion of Control (IoC) and Dependecy Injection (DI) principles.
 
