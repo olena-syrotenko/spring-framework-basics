@@ -1,6 +1,6 @@
 # Spring Notes
 
-1. [Spring Boot Core Concepts](#spring-boot-core-concepts)
+1. [Spring Core Concepts](#spring-boot-core-concepts)
 2. [Bean Configuration](#bean-configuration)
 3. [Life Cycle](#life-cycle)
 4. [Scope](#scope)
